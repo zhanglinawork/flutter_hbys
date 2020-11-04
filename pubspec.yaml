@@ -43,6 +43,11 @@ dependencies:
   oktoast: ^2.3.2 #吐司插件
   common_utils: ^1.2.1
   shared_preferences: ^0.5.12+4
+  rongcloud_im_plugin: ^4.0.3 #融云sdk
+  flutter_audio_recorder: ^0.5.5 #录音功能插件
+  flutter_sound: ^6.3.1+1
+  flutter_plugin_record: ^0.3.4 #仿微信录音的插件
+  fbutton: ^2.0.1
 
 dev_dependencies:
   flutter_test:

@@ -184,7 +184,7 @@ packages:
     source: hosted
     version: "3.0.10"
   fbutton:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: fbutton
       url: "https://pub.flutter-io.cn"
@@ -223,6 +223,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_audio_recorder:
+    dependency: "direct main"
+    description:
+      name: flutter_audio_recorder
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.5.5"
   flutter_easyrefresh:
     dependency: transitive
     description:
@@ -237,6 +244,34 @@ packages:
       relative: true
     source: path
     version: "0.0.1"
+  flutter_plugin_record:
+    dependency: "direct main"
+    description:
+      name: flutter_plugin_record
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.3.4"
+  flutter_sound:
+    dependency: "direct main"
+    description:
+      name: flutter_sound
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "6.3.1+1"
+  flutter_sound_platform_interface:
+    dependency: transitive
+    description:
+      name: flutter_sound_platform_interface
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "6.3.1+1"
+  flutter_spinkit:
+    dependency: transitive
+    description:
+      name: flutter_spinkit
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "4.1.2+1"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -303,6 +338,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "3.5.0"
+  logger:
+    dependency: transitive
+    description:
+      name: logger
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.7.0+2"
   logging:
     dependency: transitive
     description:
@@ -492,6 +534,20 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.3.8"
+  recase:
+    dependency: transitive
+    description:
+      name: recase
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "3.0.0"
+  rongcloud_im_plugin:
+    dependency: "direct main"
+    description:
+      name: rongcloud_im_plugin
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "4.0.3"
   shared_preferences:
     dependency: "direct main"
     description:
@@ -609,6 +665,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.1.6"
+  uuid:
+    dependency: transitive
+    description:
+      name: uuid
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "2.2.2"
   vector_math:
     dependency: transitive
     description:
