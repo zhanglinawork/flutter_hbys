@@ -5,5 +5,10 @@
   "voice_dialog_want_cancel": "手指上滑 取消发送",
   "voice_dialog_time_short": "说话时间太短",
   "voice_dialog_time_send": "即将发送语音",
-  "appname": "伙伴医生"
+  "appname": "伙伴医生",
+  "speech_title": "普通话",
+  "speech_tip": "按住说话",
+  "speech_clear": "清空",
+  "speech_send": "发送",
+  "speech_hint_text": "请说话…"
 }

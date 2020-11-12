@@ -212,7 +212,7 @@ packages:
     source: hosted
     version: "5.2.1"
   flustars:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: flustars
       url: "https://pub.flutter-io.cn"
@@ -223,13 +223,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_audio_recorder:
-    dependency: "direct main"
-    description:
-      name: flutter_audio_recorder
-      url: "https://pub.flutter-io.cn"
-    source: hosted
-    version: "0.5.5"
   flutter_easyrefresh:
     dependency: transitive
     description:

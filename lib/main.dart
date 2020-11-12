@@ -4,18 +4,14 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:flutter/services.dart';
 import 'package:flutter_hbys/app_config.dart';
-import 'package:flutter_hbys/rong_im/config.dart';
-import 'package:flutter_hbys/test/testPage.dart';
 import 'package:flutter_hbys/widgets/recorder_widget.dart';
+import 'package:flutter_hbys/widgets/speech_to_text_widget.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_plugin_baseframwork/base_framework/config/global_provider_manager.dart';
 import 'package:flutter_plugin_baseframwork/base_framework/view_model/app_model/locale_model.dart';
 import 'package:flutter_plugin_baseframwork/flutter_plugin_baseframwork.dart';
-import 'package:flutter_plugin_record/index.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:provider/provider.dart';
-import 'package:rongcloud_im_plugin/rongcloud_im_plugin.dart';
-
 import 'generated/l10n.dart';
 
 void main() async{
@@ -90,7 +86,9 @@ class _MyAppState extends State<MyApp> {
                 routes: {
                   // "RecordScreen": (BuildContext context) => new RecordScreen(),
                   // "RecordMp3Screen": (BuildContext context) => new RecordMp3Screen(),
-                  "WeChatRecordScreen": (BuildContext context) => RecorderWidget(),
+                  "WeChatRecordScreen": (BuildContext context) => SpeechToText(onSend: (result){
+                     debugPrint('onSend---result=$result');
+                  },),
                   // "PathProviderScreen": (BuildContext context) => new PathProviderScreen(),
                 },
               );
@@ -108,9 +106,12 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+
+
   @override
   void initState() {
     super.initState();
+
   }
 
   @override
@@ -142,7 +143,14 @@ class _MyHomePageState extends State<MyHomePage> {
               strokeColor: Colors.green,
               onPressed: (){
                 //todo 点击按钮
-                Navigator.pushNamed<dynamic>(context, "WeChatRecordScreen");
+                 Navigator.pushNamed<dynamic>(context, "WeChatRecordScreen");
+
+                // AudioTextForKDXF(
+                //   controller: _audioTextController,
+                //   wsAddr: 'ws[s]://iat-api.xfyun.cn/v2/iat',//连接地址
+                //   child: Text(_audioTextController.value??""),//翻译结果
+                // );
+                // _audioTextController.audioToText(audioFile);
               },
             )
             // new FlatButton(

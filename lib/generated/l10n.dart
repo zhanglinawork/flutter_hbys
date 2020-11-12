@@ -104,6 +104,56 @@ class S {
       args: [],
     );
   }
+
+  /// `普通话`
+  String get speech_title {
+    return Intl.message(
+      '普通话',
+      name: 'speech_title',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `按住说话`
+  String get speech_tip {
+    return Intl.message(
+      '按住说话',
+      name: 'speech_tip',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `清空`
+  String get speech_clear {
+    return Intl.message(
+      '清空',
+      name: 'speech_clear',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `发送`
+  String get speech_send {
+    return Intl.message(
+      '发送',
+      name: 'speech_send',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `请说话…`
+  String get speech_hint_text {
+    return Intl.message(
+      '请说话…',
+      name: 'speech_hint_text',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

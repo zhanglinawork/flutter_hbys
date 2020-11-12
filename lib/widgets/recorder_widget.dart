@@ -9,11 +9,10 @@ import 'package:flutter_plugin_record/index.dart';
 typedef startRecord = Future Function();
 typedef stopRecord = Future Function();
 
-///录音控件
+///录音控件(仿微信录音功能)
 class RecorderWidget extends StatefulWidget {
   final Function startRecord;
   final Function stopRecord;
-
   /// startRecord 开始录制回调  stopRecord回调
   const RecorderWidget({Key key, this.startRecord, this.stopRecord})
       : super(key: key);

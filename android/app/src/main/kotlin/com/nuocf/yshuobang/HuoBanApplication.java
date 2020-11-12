@@ -1,4 +1,4 @@
-package com.nuocf.flutter_hbys;
+package com.nuocf.yshuobang;
 
 import android.app.Activity;
 import android.content.Context;

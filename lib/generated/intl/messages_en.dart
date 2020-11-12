@@ -22,6 +22,11 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
     "appname" : MessageLookupByLibrary.simpleMessage("伙伴医生"),
+    "speech_clear" : MessageLookupByLibrary.simpleMessage("清空"),
+    "speech_hint_text" : MessageLookupByLibrary.simpleMessage("请说话…"),
+    "speech_send" : MessageLookupByLibrary.simpleMessage("发送"),
+    "speech_tip" : MessageLookupByLibrary.simpleMessage("按住说话"),
+    "speech_title" : MessageLookupByLibrary.simpleMessage("普通话"),
     "voice_dialog_time_send" : MessageLookupByLibrary.simpleMessage("即将发送语音"),
     "voice_dialog_time_short" : MessageLookupByLibrary.simpleMessage("说话时间太短"),
     "voice_dialog_want_cancel" : MessageLookupByLibrary.simpleMessage("手指上滑 取消发送"),
