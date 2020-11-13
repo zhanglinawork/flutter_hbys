@@ -1,17 +1,20 @@
 import 'package:fbutton/fbutton.dart';
 import 'package:flustars/flustars.dart';
 import 'package:flutter/material.dart';
-import 'dart:async';
 import 'package:flutter/services.dart';
 import 'package:flutter_hbys/app_config.dart';
-import 'package:flutter_hbys/widgets/recorder_widget.dart';
+import 'package:flutter_hbys/rong_im/config.dart';
+import 'package:flutter_hbys/rong_im/pages/conversation_page.dart';
+import 'package:flutter_hbys/rong_im/util/db_manager.dart';
+import 'package:flutter_hbys/rong_im/util/event_bus.dart';
+import 'package:flutter_hbys/rong_im/util/user_info_datesource.dart';
 import 'package:flutter_hbys/widgets/speech_to_text_widget.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_plugin_baseframwork/base_framework/config/global_provider_manager.dart';
 import 'package:flutter_plugin_baseframwork/base_framework/view_model/app_model/locale_model.dart';
-import 'package:flutter_plugin_baseframwork/flutter_plugin_baseframwork.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:provider/provider.dart';
+import 'package:rongcloud_im_plugin/rongcloud_im_plugin.dart'as prefix;
 import 'generated/l10n.dart';
 
 void main() async{
@@ -25,10 +28,21 @@ void main() async{
 class MyApp extends StatefulWidget {
   @override
   _MyAppState createState() => _MyAppState();
+
+  static BuildContext getContext() {
+    return _MyAppState.getContext();
+  }
+
 }
 
 class _MyAppState extends State<MyApp> {
   String _platformVersion = 'Unknown';
+
+  static BuildContext appContext;
+
+  static BuildContext getContext() {
+    return appContext;
+  }
 
   @override
   void initState() {
@@ -37,28 +51,75 @@ class _MyAppState extends State<MyApp> {
   }
 
   // Platform messages are asynchronous, so we initialize in an async method.
-  Future<void> initPlatformState() async {
-    String platformVersion;
-    // Platform messages may fail, so we use a try/catch PlatformException.
-    try {
-      platformVersion = await FlutterPluginBaseframwork.platformVersion;
-    } on PlatformException {
-      platformVersion = 'Failed to get platform version.';
+  // Future<void> initPlatformState() async {
+  //   String platformVersion;
+  //   // Platform messages may fail, so we use a try/catch PlatformException.
+  //   try {
+  //     platformVersion = await FlutterPluginBaseframwork.platformVersion;
+  //   } on PlatformException {
+  //     platformVersion = 'Failed to get platform version.';
+  //   }
+  //
+  //   // If the widget was removed from the tree while the asynchronous platform
+  //   // message was in flight, we want to discard the reply rather than calling
+  //   // setState to update our non-existent appearance.
+  //   if (!mounted) return;
+  //
+  //   setState(() {
+  //     _platformVersion = platformVersion;
+  //   });
+  // }
+
+  initPlatformState() async {
+    //1.初始化 im SDK
+
+    prefix.RongIMClient.init(RongAppKey);
+
+    //2.连接 im SDK
+    // SharedPreferences prefs = await SharedPreferences.getInstance();
+    // String token = prefs.get("token");
+    String token = "Wz7tJ9LR7wb6/5zR9S/iBUOucLWctLVl2unWjHRJEMuptFGcfX5aBkDPEC+S+C5b@trcu.cn.rongnav.com;trcu.cn.rongcfg.com";
+    if (token != null && token.length > 0) {
+      // int rc = await RongIMClient.connect(token);
+      debugPrint("请求融云连接------");
+     prefix.RongIMClient.connect(token, (int code, String userId) {
+
+        EventBus.instance.commit(EventKeys.UpdateNotificationQuietStatus, {});
+        if (code == 31004 || code == 12) {
+          debugPrint("融云连接失败");
+          // Navigator.of(context).pushAndRemoveUntil(
+          //     new MaterialPageRoute(builder: (context) => new LoginPage()),
+          //         (route) => route == null);
+        } else if (code == 0) {
+         debugPrint("融云连接成功");
+          // 连接成功后打开数据库
+           _initUserInfoCache();
+        }
+      });
+    } else {
+      // Navigator.of(context).pushAndRemoveUntil(
+      //     new MaterialPageRoute(builder: (context) => new LoginPage()),
+      //         (route) => route == null);
+      debugPrint("融云连接失败");
     }
+  }
 
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) return;
-
-    setState(() {
-      _platformVersion = platformVersion;
-    });
+  // 初始化用户信息缓存
+  void _initUserInfoCache() {
+    DbManager.instance.openDb();
+    UserInfoCacheListener cacheListener = UserInfoCacheListener();
+    cacheListener.getUserInfo = (String userId) {
+      return UserInfoDataSource.generateUserInfo(userId);
+    };
+    cacheListener.getGroupInfo = (String groupId) {
+      return UserInfoDataSource.generateGroupInfo(groupId);
+    };
+    UserInfoDataSource.setCacheListener(cacheListener);
   }
 
   @override
   Widget build(BuildContext context) {
-
+    appContext = context;
     ///设计图尺寸
     setDesignWHD(750, 1334,density: 1.0);
 
@@ -84,12 +145,12 @@ class _MyAppState extends State<MyApp> {
                 //home: testPage().generateWidget(),
                 home: new MyHomePage(title: 'Flutter Demo Home Page'),
                 routes: {
-                  // "RecordScreen": (BuildContext context) => new RecordScreen(),
-                  // "RecordMp3Screen": (BuildContext context) => new RecordMp3Screen(),
-                  "WeChatRecordScreen": (BuildContext context) => SpeechToText(onSend: (result){
-                     debugPrint('onSend---result=$result');
-                  },),
-                  // "PathProviderScreen": (BuildContext context) => new PathProviderScreen(),
+                  // "WeChatRecordScreen": (BuildContext context) => ConversationPage(),
+                  "WeChatRecordScreen": (BuildContext context) => SpeechToText(
+                    onSend: (result){
+                      debugPrint('onSend---result=$result');
+                    },
+                  ),
                 },
               );
             }),),

@@ -4,7 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hbys/generated/l10n.dart';
 import 'package:flutter_hbys/widgets/my_colors.dart';
 import 'package:flutter_plugin_baseframwork/base_framework/utils/image_helper.dart';
-import '../xf_speech_plugin.dart';
+import 'package:xf_speech_plugin/xf_speech_plugin.dart';
+
+
+
 
 
 ///语音转文字（科大讯飞）

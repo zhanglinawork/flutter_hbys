@@ -6,8 +6,8 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.5.0'
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'com.android.tools.build:gradle:4.0.1'
+        //classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
 
@@ -28,4 +28,8 @@ subprojects {
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+dependencies {
+    //implementation 'org.jetbrains:annotations:15.0'
 }

@@ -14,7 +14,9 @@
         android:label="flutter_hbys"
         android:icon="@mipmap/ic_launcher"
         tools:replace="android:label"
-        >
+        android:allowBackup="true"
+        android:requestLegacyExternalStorage = "true"
+        tools:targetApi="q">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
