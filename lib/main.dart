@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_hbys/app_config.dart';
 import 'package:flutter_hbys/rong_im/config.dart';
 import 'package:flutter_hbys/rong_im/pages/conversation_page.dart';
+import 'package:flutter_hbys/rong_im/pages/item/message_item_factory.dart';
 import 'package:flutter_hbys/rong_im/util/db_manager.dart';
 import 'package:flutter_hbys/rong_im/util/event_bus.dart';
 import 'package:flutter_hbys/rong_im/util/user_info_datesource.dart';
@@ -14,7 +15,9 @@ import 'package:flutter_plugin_baseframwork/base_framework/config/global_provide
 import 'package:flutter_plugin_baseframwork/base_framework/view_model/app_model/locale_model.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:provider/provider.dart';
-import 'package:rongcloud_im_plugin/rongcloud_im_plugin.dart'as prefix;
+import 'package:rongcloud_im_plugin/rongcloud_im_plugin.dart';
+// import 'package:rongcloud_im_plugin/rongcloud_im_plugin.dart'as prefix;
+// import 'package:rongcloud_im_plugin/rongcloud_im_plugin.dart';
 import 'generated/l10n.dart';
 
 void main() async{
@@ -71,18 +74,18 @@ class _MyAppState extends State<MyApp> {
   // }
 
   initPlatformState() async {
+
+
     //1.初始化 im SDK
-
-    prefix.RongIMClient.init(RongAppKey);
-
+   // prefix.RongIMClient.init(RongAppKey);
     //2.连接 im SDK
     // SharedPreferences prefs = await SharedPreferences.getInstance();
     // String token = prefs.get("token");
-    String token = "Wz7tJ9LR7wb6/5zR9S/iBUOucLWctLVl2unWjHRJEMuptFGcfX5aBkDPEC+S+C5b@trcu.cn.rongnav.com;trcu.cn.rongcfg.com";
+    String token = "Wz7tJ9LR7wb6/5zR9S/iBUOucLWctLVl2unWjHRJEMvj7n0E41nSYUDPEC+S+C5b@trcu.cn.rongnav.com;trcu.cn.rongcfg.com";
     if (token != null && token.length > 0) {
       // int rc = await RongIMClient.connect(token);
       debugPrint("请求融云连接------");
-     prefix.RongIMClient.connect(token, (int code, String userId) {
+     RongIMClient.connect(token, (int code, String userId) {
 
         EventBus.instance.commit(EventKeys.UpdateNotificationQuietStatus, {});
         if (code == 31004 || code == 12) {
@@ -145,12 +148,12 @@ class _MyAppState extends State<MyApp> {
                 //home: testPage().generateWidget(),
                 home: new MyHomePage(title: 'Flutter Demo Home Page'),
                 routes: {
-                  // "WeChatRecordScreen": (BuildContext context) => ConversationPage(),
-                  "WeChatRecordScreen": (BuildContext context) => SpeechToText(
-                    onSend: (result){
-                      debugPrint('onSend---result=$result');
-                    },
-                  ),
+                  "WeChatRecordScreen": (BuildContext context) => ConversationPage(),
+                  // "WeChatRecordScreen": (BuildContext context) => SpeechToText(
+                  //   onSend: (result){
+                  //     debugPrint('onSend---result=$result');
+                  //   },
+                  // ),
                 },
               );
             }),),

@@ -43,9 +43,22 @@ public class HuoBanApplication extends FlutterApplication {
     public final Stack<Activity> mActivityStack = new Stack<Activity>();
 
 
-
-
-
+    @Override
+    public void onCreate() {
+        super.onCreate();
+//        Log.e("","初始化融云");
+//        RongIMClient.init( this,"cpj2xarlc14tn");
+//        List<Class<? extends MessageContent>> defineMsgType = new ArrayList<>();
+//        defineMsgType.add(PromptMessage.class);
+//        try {
+//            Log.e("","注册自定义消息");
+//            RongIMClient.registerMessageType(defineMsgType);
+//            Log.e("","注册自定义消息1111");
+//        } catch (AnnotationNotFoundException e) {
+//            Log.e("","注册自定义消息--"+e.getMessage());
+//            e.printStackTrace();
+//        }
+    }
 
     @Override
     protected void attachBaseContext(Context base) {

@@ -633,9 +633,9 @@ packages:
   rongcloud_im_plugin:
     dependency: "direct main"
     description:
-      name: rongcloud_im_plugin
-      url: "https://pub.flutter-io.cn"
-    source: hosted
+      path: "plugins/rongcloud-im-flutter-sdk-master"
+      relative: true
+    source: path
     version: "4.0.3"
   rxdart:
     dependency: transitive

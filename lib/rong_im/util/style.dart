@@ -32,7 +32,7 @@ class RCFont {
   static const double ConListDigestFont = 12;
 
   //会话页面，消息相关字体大小
-  static const double MessageTextFont = 18;
+  static const double MessageTextFont = 16;
   static const double MessageTimeFont = 12;
   static const double MessageNameFont = 14;
   static const double MessageNotifiFont = 15;

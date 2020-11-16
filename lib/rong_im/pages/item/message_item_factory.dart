@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_hbys/widgets/my_colors.dart';
 import 'package:rongcloud_im_plugin/rongcloud_im_plugin.dart';
 import '../../util/combine_message_util.dart';
 import '../../widget/cachImage/cached_image_widget.dart';
@@ -23,6 +24,7 @@ class MessageItemFactory extends StatelessWidget {
     double screenWidth = MediaQuery.of(context).size.width;
     TextMessage msg = message.content;
     return Container(
+      color: MyColors.color_10B9A4,
       constraints: BoxConstraints(
         // 屏幕宽度减去头像宽度加上间距
         maxWidth: screenWidth - 150,
@@ -30,7 +32,7 @@ class MessageItemFactory extends StatelessWidget {
       padding: EdgeInsets.all(8),
       child: Text(
         needShow ? msg.content : "点击查看",
-        style: TextStyle(fontSize: RCFont.MessageTextFont),
+        style: TextStyle(fontSize: RCFont.MessageTextFont,color: Colors.white),
       ),
     );
   }
@@ -82,8 +84,8 @@ class MessageItemFactory extends StatelessWidget {
         children: <Widget>[
           Image.asset(
             message.messageDirection == RCMessageDirection.Send
-                ? "assets/images/burnPicture.png"
-                : "assets/images/burnPictureForm.png",
+                ? "assets/images/placeholder2.png"
+                : "assets/images/placeholder2.png",
             width: 120,
             height: 126,
           ),
@@ -101,7 +103,7 @@ class MessageItemFactory extends StatelessWidget {
 
     return Container(
       constraints: BoxConstraints(
-        maxWidth: MediaQuery.of(context).size.width - 150,
+        maxWidth: 102,
       ),
       child: widget,
     );
@@ -197,8 +199,10 @@ class MessageItemFactory extends StatelessWidget {
   }
 
   ///语音消息 item
-  Widget voiceMessageItem() {
+  Widget voiceMessageItem(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
     VoiceMessage msg = message.content;
+    double voiceW = 60 + (screenWidth - 150 - 60) * (msg.duration - 1) / 59;
     List<Widget> list = new List();
     if (message.messageDirection == RCMessageDirection.Send) {
       list.add(SizedBox(
@@ -206,15 +210,20 @@ class MessageItemFactory extends StatelessWidget {
       ));
       list.add(Text(
         msg.duration.toString() + "''",
-        style: TextStyle(fontSize: RCFont.MessageTextFont),
+        style: TextStyle(fontSize: RCFont.MessageTextFont,color: Colors.white),
+        textAlign: TextAlign.right,
       ));
-      list.add(SizedBox(
-        width: 20,
-      ));
+      // list.add(SizedBox(
+      //   width: 20,
+      // ));
       list.add(Container(
         width: 20,
         height: 20,
-        child: Image.asset("assets/images/voice_icon.png"),
+        child: Image.asset("assets/images/img_voice_right_2.png"),
+
+      ));
+      list.add(SizedBox(
+        width: 6,
       ));
     } else {
       list.add(SizedBox(
@@ -223,18 +232,25 @@ class MessageItemFactory extends StatelessWidget {
       list.add(Container(
         width: 20,
         height: 20,
-        child: Image.asset("assets/images/voice_icon_reverse.png"),
+        child: Image.asset("assets/images/img_voice_left_2.png"),
       ));
       list.add(SizedBox(
         width: 20,
       ));
-      list.add(Text(msg.duration.toString() + "''"));
+      list.add(Text(msg.duration.toString() + "''",
+        style: TextStyle(fontSize: RCFont.MessageTextFont,color: Colors.white),
+        textAlign: TextAlign.right,
+      ));
     }
 
     return Container(
-      width: 80,
+      width: voiceW,
       height: 44,
-      child: Row(children: list),
+      color: MyColors.color_10B9A4,
+      child: Row(
+          mainAxisAlignment: message.messageDirection == RCMessageDirection.Send?  MainAxisAlignment.end:
+          MainAxisAlignment.start,
+          children: list),
     );
   }
 
@@ -563,12 +579,13 @@ class MessageItemFactory extends StatelessWidget {
   }
 
   Widget messageItem(BuildContext context) {
+    debugPrint("messageItem---message.content=${message.content}");
     if (message.content is TextMessage) {
       return textMessageItem(context);
     } else if (message.content is ImageMessage) {
       return imageMessageItem(context);
     } else if (message.content is VoiceMessage) {
-      return voiceMessageItem();
+      return voiceMessageItem(context);
     } else if (message.content is SightMessage) {
       return sightMessageItem();
     } else if (message.content is FileMessage) {
@@ -581,9 +598,17 @@ class MessageItemFactory extends StatelessWidget {
       return combineMessageItem(context);
     } else if (message.content is ReferenceMessage) {
       return referenceMessageItem(context);
-    } else if (message.content is LocationMessage) {
+    }
+    else if(message.content is PromptMessage){
+      return promptMessageItem(context);
+    }
+    // else if(message.content is CustomizeMessage){
+    //   return customizeMessageItem(context);
+    // }
+    else if (message.content is LocationMessage) {
       return Text("位置消息 " + message.objectName);
-    } else {
+    }
+    else {
       return Text("无法识别消息 " + message.objectName);
     }
   }
@@ -602,6 +627,74 @@ class MessageItemFactory extends StatelessWidget {
     return Container(
       color: _getMessageWidgetBGColor(message.messageDirection),
       child: messageItem(context),
+    );
+  }
+
+
+
+  ///PromptMessage消息 item
+  Widget promptMessageItem(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    debugPrint("message.content==${message.content}");
+    PromptMessage msg = message.content;
+    debugPrint("msg.content==${msg.content}");
+    return Container(
+      color: MyColors.color_E8E8E8,
+      constraints: BoxConstraints(
+        // 屏幕宽度减去头像宽度加上间距
+        maxWidth: screenWidth - 60,
+      ),
+      padding: EdgeInsets.all(6),
+      child: 
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Image.asset("assets/images/tixing.png",width: 20,
+            height: 20,),
+          SizedBox(
+            width: 5,
+          ),
+          Expanded(
+            child: Text(
+              msg.content,
+              maxLines: 100,
+              style: TextStyle(fontSize: RCFont.MessageTimeFont,color: MyColors.color_666666),
+            ),
+          ),
+
+        ],
+      )
+     ,
+    );
+  }
+
+  ///CustomizeMessage消息 item
+  Widget customizeMessageItem(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    TextMessage msg = message.content;
+    return Container(
+      color: MyColors.color_E8E8E8,
+      constraints: BoxConstraints(
+        // 屏幕宽度减去头像宽度加上间距
+        maxWidth: screenWidth - 350,
+      ),
+      padding: EdgeInsets.all(6),
+      child:
+      Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Image.asset("assets/images/tixing.png"),
+          SizedBox(
+            width: 5,
+          ),
+          Text(
+            needShow ? msg.content : "点击查看",
+            style: TextStyle(fontSize: RCFont.MessageNameFont,color: MyColors.color_666666),
+          )
+        ],
+      )
+      ,
     );
   }
 }

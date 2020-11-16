@@ -33,6 +33,8 @@ dependencies:
     path: plugins/flutter_plugin_baseframwork
   xf_speech_plugin:
     path: plugins/xfspeech_plugin-master
+  rongcloud_im_plugin:
+    path: plugins/rongcloud-im-flutter-sdk-master
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -49,7 +51,7 @@ dependencies:
   oktoast: ^2.3.2 #吐司插件
   common_utils: ^1.2.1
   shared_preferences: ^0.5.12+4
-  rongcloud_im_plugin: ^4.0.3 #融云sdk
+#  rongcloud_im_plugin: ^4.0.3 #融云sdk
   flutter_plugin_record: ^0.3.4 #仿微信录音的插件
   fbutton: ^2.0.1
   flustars: ^0.3.3 #Flutter常用工具类库

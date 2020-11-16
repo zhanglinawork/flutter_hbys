@@ -55,6 +55,7 @@ class CombineMessageUtils {
   static const String TAG_VST = "RC:VSTMsg"; // 音视频通话
   static const String TAG_RP = "RCJrmf:RpMsg"; // 红包
   static const String TAG_BASE_BOTTOM = "baseBottom"; // html底
+  static const String TAG_PROMPT_TXT = "PromptMessage"; // 提示信息
 
   // 消息参数
   static const String MSG_BASE_HEAD_STYLE = "{%style%}"; // 用户自定义样式
@@ -78,6 +79,7 @@ class CombineMessageUtils {
   static const String MSG_LOCATION_NAME = "{%locationName%}"; // 位置信息
   static const String MSG_LATITUDE = "{%latitude%}"; // 纬度
   static const String MSG_LONGITTUDE = "{%longitude%}"; // 经度
+
 
   Future<CombineMessage> combineMessage(List<Message> messageList) async {
     if (messageList == null || messageList.length == 0) {

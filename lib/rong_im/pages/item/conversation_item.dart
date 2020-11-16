@@ -174,17 +174,17 @@ class _ConversationItemState extends State<ConversationItem> {
             Expanded(
               child: Column(
                 children: <Widget>[
-                  Container(
-                    alignment: Alignment.centerRight,
-                    padding: EdgeInsets.fromLTRB(0, 0, 15, 0),
-                    child: Text(
-                        (this.user == null || this.user.id == null
-                            ? ""
-                            : this.user.id),
-                        style: TextStyle(
-                            fontSize: RCFont.MessageNameFont,
-                            color: Color(RCColor.MessageNameBgColor))),
-                  ),
+                  // Container(
+                  //   alignment: Alignment.centerRight,
+                  //   padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                  //   child: Text(
+                  //       (this.user == null || this.user.id == null
+                  //           ? ""
+                  //           : this.user.id),
+                  //       style: TextStyle(
+                  //           fontSize: RCFont.MessageNameFont,
+                  //           color: Color(RCColor.MessageNameBgColor))),
+                  // ),
                   buildMessageWidget(),
                   Container(
                     alignment: Alignment.centerRight,
@@ -207,11 +207,15 @@ class _ConversationItemState extends State<ConversationItem> {
                 ],
               ),
             ),
-            GestureDetector(
-              onTap: () {
-                __onTapedUserPortrait();
-              },
-              child: WidgetUtil.buildUserPortrait(this.user?.portraitUrl),
+            Visibility(
+              visible: message.objectName != prefix.PromptMessage.objectName,
+              child: GestureDetector(
+                onTap: () {
+                  __onTapedUserPortrait();
+                },
+                child: WidgetUtil.buildUserPortrait(this.user?.portraitUrl,
+                    msgDirection: message.messageDirection),
+              ),
             ),
           ],
         ),
@@ -222,29 +226,33 @@ class _ConversationItemState extends State<ConversationItem> {
           mainAxisAlignment: MainAxisAlignment.end,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            GestureDetector(
-              onTap: () {
-                __onTapedUserPortrait();
-              },
-              onLongPress: () {
-                __onLongPressUserPortrait(this.tapPos);
-              },
-              child: WidgetUtil.buildUserPortrait(this.user?.portraitUrl),
+            Visibility(
+              visible: message.objectName != prefix.PromptMessage.objectName,
+              child: GestureDetector(
+                onTap: () {
+                  __onTapedUserPortrait();
+                },
+                onLongPress: () {
+                  __onLongPressUserPortrait(this.tapPos);
+                },
+                child: WidgetUtil.buildUserPortrait(this.user?.portraitUrl,
+                    msgDirection: message.messageDirection),
+              ),
             ),
             Expanded(
               child: Column(
                 children: <Widget>[
-                  Container(
-                    alignment: Alignment.centerLeft,
-                    padding: EdgeInsets.fromLTRB(15, 0, 0, 0),
-                    child: Text(
-                      (this.user == null || this.user.id == null
-                          ? ""
-                          : this.user.id),
-                      style:
-                          TextStyle(color: Color(RCColor.MessageNameBgColor)),
-                    ),
-                  ),
+                  // Container(
+                  //   alignment: Alignment.centerLeft,
+                  //   padding: EdgeInsets.fromLTRB(15, 0, 0, 0),
+                  //   child: Text(
+                  //     (this.user == null || this.user.id == null
+                  //         ? ""
+                  //         : this.user.id),
+                  //     style:
+                  //         TextStyle(color: Color(RCColor.MessageNameBgColor)),
+                  //   ),
+                  // ),
                   buildMessageWidget(),
                 ],
               ),
@@ -337,10 +345,11 @@ class _ConversationItemState extends State<ConversationItem> {
         Expanded(
           child: Container(
             padding: EdgeInsets.fromLTRB(15, 6, 15, 10),
-            alignment:
-                message.messageDirection == prefix.RCMessageDirection.Send
+            alignment: message.objectName != prefix.PromptMessage.objectName
+                ? (message.messageDirection == prefix.RCMessageDirection.Send
                     ? Alignment.centerRight
-                    : Alignment.centerLeft,
+                    : Alignment.centerLeft)
+                : Alignment.center,
             child: Row(
                 mainAxisAlignment:
                     message.messageDirection == prefix.RCMessageDirection.Send
@@ -407,7 +416,13 @@ class _ConversationItemState extends State<ConversationItem> {
                         __onLongPressMessage(this.tapPos);
                       },
                       child: ClipRRect(
-                        borderRadius: BorderRadius.circular(8),
+                        // borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(10),
+                            bottomLeft: Radius.circular(10),
+                            bottomRight: Radius.circular(10),
+                            topRight: Radius.circular(message.objectName == prefix.PromptMessage.objectName?10:0)
+                        ),
                         child: MessageItemFactory(
                             message: message, needShow: needShowMessage),
                       ),
@@ -478,18 +493,25 @@ class _ConversationItemState extends State<ConversationItem> {
 abstract class ConversationItemDelegate {
   //点击 item
   void didTapItem(prefix.Message message);
+
   //点击消息
   void didTapMessageItem(prefix.Message message);
+
   //长按消息
   void didLongPressMessageItem(prefix.Message message, Offset tapPos);
+
   //点击用户头像
   void didTapUserPortrait(String userId);
+
   //长按用户头像
   void didLongPressUserPortrait(String userId, Offset tapPos);
+
   //发送消息已读回执请求
   void didSendMessageRequest(prefix.Message message);
+
   //点击消息已读人数
   void didTapMessageReadInfo(prefix.Message message);
+
   //点击消息已读人数
   void didTapReSendMessage(prefix.Message message);
 }

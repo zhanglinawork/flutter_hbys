@@ -1,9 +1,10 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_hbys/rong_im/widget/cachImage/cached_image_widget.dart';
+import 'package:flutter_hbys/widgets/my_colors.dart';
 import '../../util/time.dart';
 import '../../util/style.dart';
-
+import 'package:rongcloud_im_plugin/rongcloud_im_plugin.dart' as prefix;
 class WidgetUtil {
   /// 会话页面加号扩展栏里面的 widget，上面图片，下面文本
   static Widget buildExtentionWidget(
@@ -41,11 +42,13 @@ class WidgetUtil {
   }
 
   /// 用户头像
-  static Widget buildUserPortrait(String path) {
+  static Widget buildUserPortrait(String path,{int  msgDirection} ) {
+    debugPrint("用户头像---path==$path");
     Widget protraitWidget;
     if (path == null || path.isEmpty) {
       protraitWidget =
-          Image.asset("assets/images/default_portrait.png", fit: BoxFit.fill);
+          Image.asset(msgDirection == null || msgDirection == prefix.RCMessageDirection.Send?
+          "assets/images/icon_tx_grzl.png":"assets/images/img_doctor_default.png", fit: BoxFit.fill);
     } else {
       if (path.startsWith("http")) {
         protraitWidget = CachedNetworkImage(
@@ -64,7 +67,7 @@ class WidgetUtil {
     }
 
     return ClipRRect(
-      borderRadius: BorderRadius.circular(8),
+      borderRadius: BorderRadius.circular(180),
       child: Container(
         height: RCLayout.ConListPortraitSize,
         width: RCLayout.ConListPortraitSize,
@@ -95,11 +98,11 @@ class WidgetUtil {
         margin: EdgeInsets.fromLTRB(0, 0, 0, 5),
         width: RCLayout.MessageTimeItemWidth,
         height: RCLayout.MessageTimeItemHeight,
-        color: Color(RCColor.MessageTimeBgColor),
+        //color: Color(RCColor.MessageTimeBgColor),
         child: Text(
           TimeUtil.convertTime(sentTime),
           style:
-              TextStyle(color: Colors.white, fontSize: RCFont.MessageTimeFont),
+              TextStyle(color: MyColors.color_666666, fontSize: RCFont.MessageTimeFont),
         ),
       ),
     );
