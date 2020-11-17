@@ -69,8 +69,11 @@ class _RecorderWidgetState extends State<RecorderWidget> {
 
         ///结束录制时会返回录制文件的地址方便上传服务器
         print("onStop  " + data.path);
+        debugPrint("data.audioTimeLength=${data.audioTimeLength}");
         if (widget.stopRecord != null) {
-          widget.stopRecord(data.path, data.audioTimeLength);
+          double multiplier = .5;
+
+          widget.stopRecord(data.path, (multiplier * data.audioTimeLength).round());
         }
       } else if (data.msg == "onStart") {
         print("onStart --");
@@ -147,13 +150,11 @@ class _RecorderWidgetState extends State<RecorderWidget> {
           debugPrint("onTapUp--------");
         },
         child: Container(
-          height: 60,
-          color: Colors.blue,
-          margin: EdgeInsets.fromLTRB(50, 0, 50, 20),
-          child: Center(
-            child: Text(
-              textShow,
-            ),
+          height: double.infinity,
+          width: double.infinity,
+          alignment: Alignment.center,
+          child: Text(
+            textShow,
           ),
         ),
       ),
@@ -326,8 +327,8 @@ class _RecorderWidgetState extends State<RecorderWidget> {
     setState(() {
       isUp = starty - offset > 100 ? true : false;
       if (isUp) {
-        textShow = S.current.voice_recorder_want_cancel;
-        toastShow = textShow;
+        textShow = S.current.voice_recorder_recording;
+        toastShow = S.current.voice_recorder_want_cancel;
       } else {
         textShow = S.current.voice_recorder_recording;
         toastShow = curentTimer > 10

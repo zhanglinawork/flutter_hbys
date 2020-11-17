@@ -8,5 +8,7 @@ class MyColors{
   static const Color color_2B2B2B_30 = Color(0x8c2B2B2B);
   static const Color color_666666 = Color(0xff666666);
   static const Color color_E8E8E8 = Color(0xffE8E8E8);
+  static const Color color_ababad = Color(0xffababad);
+  static const Color color_d9d9d9 = Color(0xffd9d9d9);
 
 }

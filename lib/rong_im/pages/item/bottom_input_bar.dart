@@ -2,7 +2,10 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:common_utils/common_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hbys/widgets/my_colors.dart';
+import 'package:flutter_hbys/widgets/recorder_widget.dart';
 import 'widget_util.dart';
 import '../../widget/cachImage/cached_image_widget.dart';
 
@@ -15,9 +18,11 @@ import 'dart:developer' as developer;
 class BottomInputBar extends StatefulWidget {
   BottomInputBarDelegate delegate;
   _BottomInputBarState state;
+
   BottomInputBar(BottomInputBarDelegate delegate) {
     this.delegate = delegate;
   }
+
   @override
   _BottomInputBarState createState() =>
       state = _BottomInputBarState(this.delegate);
@@ -58,14 +63,16 @@ class _BottomInputBarState extends State<BottomInputBar> {
     this.delegate = delegate;
     this.inputBarStatus = InputBarStatus.Normal;
     this.textEditingController = TextEditingController();
-
+    textEditingController.clear();
     this.textField = TextField(
       onSubmitted: _clickSendMessage,
       controller: textEditingController,
       decoration: InputDecoration(
-          border: InputBorder.none, hintText: RCString.BottomInputTextHint),
+        border: InputBorder.none,
+        // hintText: RCString.BottomInputTextHint
+      ),
       focusNode: focusNode,
-      autofocus: true,
+      autofocus: false,
       maxLines: null,
       keyboardType: TextInputType.text,
     );
@@ -89,6 +96,7 @@ class _BottomInputBarState extends State<BottomInputBar> {
   @override
   void initState() {
     super.initState();
+    textEditingController.text = "";
     textEditingController.addListener(() {
       //获取输入的值
       delegate.onTextChange(textEditingController.text);
@@ -192,24 +200,47 @@ class _BottomInputBarState extends State<BottomInputBar> {
     });
   }
 
+  _onVoiceGesLongPressEnd2(String path, int duration) {
+    developer.log("_onVoiceGesLongPressEnd2", name: pageName);
+
+    if (this.delegate != null) {
+      this.delegate.willStopRecordVoice();
+    } else {
+      developer.log("没有实现 BottomInputBarDelegate", name: pageName);
+    }
+    if (this.delegate != null && path.length > 0) {
+      this.delegate.willSendVoice(path, duration);
+    } else {
+      developer.log("没有实现 BottomInputBarDelegate || 录音路径为空", name: pageName);
+    }
+  }
+
   Widget _getMainInputField() {
     Widget widget;
     if (this.inputBarStatus == InputBarStatus.Voice) {
       widget = Container(
         alignment: Alignment.center,
-        child: GestureDetector(
-          behavior: HitTestBehavior.opaque,
-          child: Text(RCString.BottomTapSpeak, textAlign: TextAlign.center),
-          onLongPress: () {
-            _onVoiceGesLongPress();
-          },
-          onLongPressEnd: (LongPressEndDetails details) {
-            _onVoiceGesLongPressEnd();
+        child: RecorderWidget(
+          stopRecord: (path,duration){
+            _onVoiceGesLongPressEnd2(path, duration);
           },
         ),
+        // child: GestureDetector(
+        //   behavior: HitTestBehavior.opaque,
+        //   child: Text(RCString.BottomTapSpeak, textAlign: TextAlign.center,style: TextStyle(
+        //     fontSize: 15,color: MyColors.color_333333
+        //   ),),
+        //   onLongPress: () {
+        //     _onVoiceGesLongPress();
+        //   },
+        //   onLongPressEnd: (LongPressEndDetails details) {
+        //     _onVoiceGesLongPressEnd();
+        //   },
+        // ),
       );
     } else {
       widget = Container(
+        alignment: Alignment.center,
         padding: EdgeInsets.fromLTRB(8, 0, 8, 0),
         child: new ConstrainedBox(
           constraints: BoxConstraints(
@@ -224,14 +255,16 @@ class _BottomInputBarState extends State<BottomInputBar> {
       );
     }
     return Container(
-      height: 45,
+      height: 36,
       child: Stack(
         children: <Widget>[
           Container(
-            padding: EdgeInsets.fromLTRB(8, 8, 8, 8),
+            padding: EdgeInsets.all(5),
             decoration: BoxDecoration(
-                border: new Border.all(color: Colors.black54, width: 0.5),
-                borderRadius: BorderRadius.circular(8)),
+                color: MyColors.color_d9d9d9,
+                border:
+                    new Border.all(color: MyColors.color_d9d9d9, width: 0.5),
+                borderRadius: BorderRadius.circular(4)),
           ),
           widget
         ],
@@ -255,33 +288,41 @@ class _BottomInputBarState extends State<BottomInputBar> {
         child: Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
+              SizedBox(
+                height: 10,
+              ),
               referenceMessage == null
                   ? WidgetUtil.buildEmptyWidget()
                   : _buildReferenceWidget(),
-              GestureDetector(
-                  onTap: () {
-                    switchPhrases();
-                  },
-                  child: Container(
-                    padding: EdgeInsets.fromLTRB(6, 6, 12, 6),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(5),
-                      child: Container(
-                        alignment: Alignment.center,
-                        width: 80,
-                        height: 22,
-                        color: Color(0xffC8C8C8),
-                        child: Text(
-                          RCString.BottomCommonPhrases,
-                          style: TextStyle(color: Colors.white, fontSize: 14),
-                        ),
-                      ),
-                    ),
-                  )),
+              // GestureDetector(
+              //     onTap: () {
+              //       switchPhrases();
+              //     },
+              //     child: Container(
+              //       padding: EdgeInsets.fromLTRB(6, 6, 12, 6),
+              //       child: ClipRRect(
+              //         borderRadius: BorderRadius.circular(5),
+              //         child: Container(
+              //           alignment: Alignment.center,
+              //           width: 80,
+              //           height: 22,
+              //           color: Color(0xffC8C8C8),
+              //           child: Text(
+              //             RCString.BottomCommonPhrases,
+              //             style: TextStyle(color: Colors.white, fontSize: 14),
+              //           ),
+              //         ),
+              //       ),
+              //     )),
               Row(
                 children: <Widget>[
                   IconButton(
-                    icon: Icon(Icons.mic),
+                    icon: Image.asset(
+                      "assets/images/rc_keyboard.png",
+                      width: 30,
+                      height: 30,
+                      fit: BoxFit.fill,
+                    ),
                     iconSize: 32,
                     onPressed: () {
                       switchVoice();
@@ -289,20 +330,33 @@ class _BottomInputBarState extends State<BottomInputBar> {
                   ),
                   Expanded(child: _getMainInputField()),
                   IconButton(
-                    icon: Icon(Icons.mood), // sentiment_ver
+                    icon: Image.asset(
+                      "assets/images/rc_emotion_toggle.png",
+                      width: 30,
+                      height: 30,
+                      fit: BoxFit.fill,
+                    ), // sentiment_ver
                     iconSize: 32,
                     onPressed: () {
                       switchEmoji();
                     },
                   ),
                   IconButton(
-                    icon: Icon(Icons.add),
+                    icon: Image.asset(
+                      "assets/images/rc_ext_plugin_toggle.png",
+                      width: 30,
+                      height: 30,
+                      fit: BoxFit.fill,
+                    ),
                     iconSize: 32,
                     onPressed: () {
                       switchExtention();
                     },
                   ),
                 ],
+              ),
+              SizedBox(
+                height: 10,
               ),
             ]));
   }

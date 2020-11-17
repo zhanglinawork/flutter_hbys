@@ -82,7 +82,7 @@ class _MyAppState extends State<MyApp> {
     //2.连接 im SDK
     // SharedPreferences prefs = await SharedPreferences.getInstance();
     // String token = prefs.get("token");
-    String token = "Wz7tJ9LR7wb6/5zR9S/iBUOucLWctLVl2unWjHRJEMvj7n0E41nSYUDPEC+S+C5b@trcu.cn.rongnav.com;trcu.cn.rongcfg.com";
+    String token = "TtbMBW+HsYua3fCSGNDHsLLYlVEVHLla2unWjHRJEMvuSDKPcR2LJUDPEC+S+C5b@trcu.cn.rongnav.com;trcu.cn.rongcfg.com";
     if (token != null && token.length > 0) {
       // int rc = await RongIMClient.connect(token);
       debugPrint("请求融云连接------");

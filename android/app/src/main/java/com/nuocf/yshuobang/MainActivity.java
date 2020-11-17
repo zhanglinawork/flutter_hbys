@@ -33,9 +33,9 @@ public class MainActivity extends FlutterActivity {
         defineMsgType.add(EndMessage.class);
         try {
             Log.e(TAG,"注册自定义消息");
-//            RongIMClient.registerMessageType(defineMsgType);
-            RongIMClient.registerMessageType(PromptMessage.class);
-            RongIMClient.registerMessageType(CustomizeMessage.class);
+            RongIMClient.registerMessageType(defineMsgType);
+//            RongIMClient.registerMessageType(PromptMessage.class);
+//            RongIMClient.registerMessageType(CustomizeMessage.class);
             Log.e(TAG,"注册自定义消息1111");
         } catch (AnnotationNotFoundException e) {
             Log.e(TAG,"注册自定义消息--"+e.getMessage());

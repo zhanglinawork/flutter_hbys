@@ -1,3 +1,4 @@
+import 'package:common_utils/common_utils.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -140,6 +141,7 @@ class MediaUtil {
 
   //播放语音
   void startPlayAudio(String path) {
+    LogUtil.e("播放语音--path="+path);
     if (flutterSound.isPlaying) {
       stopPlayAudio();
     }
@@ -148,7 +150,9 @@ class MediaUtil {
 
   //停止播放语音
   void stopPlayAudio() {
-    flutterSound.stopPlayer();
+    if(flutterSound != null && flutterSound.isRecording) {
+      flutterSound.stopPlayer();
+    }
   }
 
   String getCorrectedLocalPath(String localPath) {

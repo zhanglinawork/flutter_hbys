@@ -57,6 +57,7 @@ class _ConversationItemState extends State<ConversationItem> {
 
   ValueNotifier<int> time = ValueNotifier<int>(0);
   bool needShowMessage = true;
+  bool isDispose = false;
 
   _ConversationItemState(
       ConversationItemDelegate delegate,
@@ -81,6 +82,13 @@ class _ConversationItemState extends State<ConversationItem> {
             time.value == msg.content.destructDuration);
   }
 
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    isDispose = true;
+    super.dispose();
+  }
+
   void setInfo(String targetId) {
     example.UserInfo userInfo =
         example.UserInfoDataSource.cachedUserMap[targetId];
@@ -88,9 +96,11 @@ class _ConversationItemState extends State<ConversationItem> {
       this.user = userInfo;
     } else {
       example.UserInfoDataSource.getUserInfo(targetId).then((onValue) {
-        setState(() {
-          this.user = onValue;
-        });
+        if(!isDispose) {
+          setState(() {
+            this.user = onValue;
+          });
+        }
       });
     }
   }
@@ -103,6 +113,8 @@ class _ConversationItemState extends State<ConversationItem> {
   }
 
   void _refreshUI(prefix.Message msg) {
+    if(isDispose)
+      return;
     // setState(() {
     this.message = msg;
     // 撤回消息的时候因为是替换之前的消息 UI ，需要整个刷新 item
@@ -318,7 +330,9 @@ class _ConversationItemState extends State<ConversationItem> {
       } else {
         if (!needShowMessage) {
           needShowMessage = true;
-          setState(() {});
+          if(!isDispose) {
+            setState(() {});
+          }
         }
         delegate.didTapMessageItem(message);
       }

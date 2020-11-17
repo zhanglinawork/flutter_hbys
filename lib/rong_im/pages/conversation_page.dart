@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:common_utils/common_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
@@ -23,7 +24,7 @@ enum ConversationStatus {
   Normal, //正常
   VoiceRecorder, //语音输入，页面中间回弹出录音的 gif
 }
-
+///融云聊天界面
 class ConversationPage extends StatefulWidget {
   final Map arguments;
   ConversationPage({Key key, this.arguments}) : super(key: key);
@@ -136,9 +137,10 @@ class _ConversationPageState extends State<ConversationPage>
   @override
   void dispose() {
     super.dispose();
-    if (textDraft == null) {
+    //if (textDraft == null) {
       textDraft = '';
-    }
+    //}
+    debugPrint("草稿内容textDraft=$textDraft");
     RongIMClient.saveTextMessageDraft(conversationType, targetId, textDraft);
     RongIMClient.clearMessagesUnreadStatus(conversationType, targetId);
     EventBus.instance.commit(EventKeys.ConversationPageDispose, null);
@@ -147,6 +149,7 @@ class _ConversationPageState extends State<ConversationPage>
     EventBus.instance.removeListener(EventKeys.ReceiveReceiptRequest);
     EventBus.instance.removeListener(EventKeys.ReceiveReceiptResponse);
     MediaUtil.instance.stopPlayAudio();
+
   }
 
   void _pullMoreHistoryMessage() async {
@@ -334,7 +337,7 @@ class _ConversationPageState extends State<ConversationPage>
     textDraft =
         await RongIMClient.getTextMessageDraft(conversationType, targetId);
     if (bottomInputBar != null) {
-      bottomInputBar.setTextContent(textDraft);
+     // bottomInputBar.setTextContent(textDraft);
     }
     // _refreshUI();
   }
@@ -842,10 +845,15 @@ class _ConversationPageState extends State<ConversationPage>
       if (msg.localPath != null &&
           msg.localPath.isNotEmpty &&
           File(msg.localPath).existsSync()) {
+        debugPrint("播放音频VoiceMessage--本地音频 = ${msg.localPath}");
         MediaUtil.instance.startPlayAudio(msg.localPath);
       } else {
-        MediaUtil.instance.startPlayAudio(msg.remoteUrl);
-        RongIMClient.downloadMediaMessage(message);
+        debugPrint("播放音频VoiceMessage--远程音频 = ${msg.remoteUrl}");
+        if(msg.remoteUrl != null) {
+          MediaUtil.instance.startPlayAudio(
+              msg.remoteUrl);
+          RongIMClient.downloadMediaMessage(message);
+        }
       }
     } else if (message.content is ImageMessage ||
         message.content is GifMessage) {
