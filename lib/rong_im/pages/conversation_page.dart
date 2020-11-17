@@ -895,7 +895,8 @@ class _ConversationPageState extends State<ConversationPage>
           "title": richContentMessage.title
         };
         Navigator.pushNamed(context, "/webview", arguments: param);
-      } else {
+      }
+      else {
         // 引用的消息为文本时的点击事件
       }
     }

@@ -9,6 +9,7 @@ import 'package:flutter_hbys/rong_im/pages/item/message_item_factory.dart';
 import 'package:flutter_hbys/rong_im/util/db_manager.dart';
 import 'package:flutter_hbys/rong_im/util/event_bus.dart';
 import 'package:flutter_hbys/rong_im/util/user_info_datesource.dart';
+import 'package:flutter_hbys/router.dart';
 import 'package:flutter_hbys/widgets/speech_to_text_widget.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_plugin_baseframwork/base_framework/config/global_provider_manager.dart';
@@ -132,6 +133,7 @@ class _MyAppState extends State<MyApp> {
         child: Consumer<LocaleModel>(
             builder: (ctx,localModel,child){
               return MaterialApp(
+                onGenerateRoute: onGenerateRoute,
                 debugShowCheckedModeBanner: false,
                // locale: localModel.locale,
                 //国际化工厂代理

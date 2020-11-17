@@ -165,103 +165,122 @@ class _ConversationItemState extends State<ConversationItem> {
   }
 
   Widget subContent() {
-    if (message.messageDirection == prefix.RCMessageDirection.Send) {
+    if(message.objectName == prefix.PromptMessage.objectName || message.objectName == prefix.EndMessage.objectName){
       return Expanded(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Expanded(
-              child: Column(
-                children: <Widget>[
-                  // Container(
-                  //   alignment: Alignment.centerRight,
-                  //   padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
-                  //   child: Text(
-                  //       (this.user == null || this.user.id == null
-                  //           ? ""
-                  //           : this.user.id),
-                  //       style: TextStyle(
-                  //           fontSize: RCFont.MessageNameFont,
-                  //           color: Color(RCColor.MessageNameBgColor))),
-                  // ),
-                  buildMessageWidget(),
-                  Container(
-                    alignment: Alignment.centerRight,
-                    padding: EdgeInsets.fromLTRB(0, 0, 15, 0),
-                    child: GestureDetector(
-                      behavior: HitTestBehavior.opaque,
-                      onTapDown: (TapDownDetails details) {
-                        this.tapPos = details.globalPosition;
-                      },
-                      onTap: () {
-                        __onTapedReadRequest();
-                      },
-                      child: message.content != null &&
-                              message.content.destructDuration != null &&
-                              message.content.destructDuration > 0
-                          ? Text("")
-                          : buildReadInfo(),
+        child:Padding(padding: EdgeInsets.only(left: 10,right: 10),
+        child:  ClipRRect(
+          borderRadius: BorderRadius.circular(10),
+          child: MessageItemFactory(
+              message: message, needShow: needShowMessage),
+        ),
+        )
+
+      );
+    }
+    else {
+      if (message.messageDirection == prefix.RCMessageDirection.Send) {
+        return Expanded(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Expanded(
+                child: Column(
+                  children: <Widget>[
+                    // Container(
+                    //   alignment: Alignment.centerRight,
+                    //   padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                    //   child: Text(
+                    //       (this.user == null || this.user.id == null
+                    //           ? ""
+                    //           : this.user.id),
+                    //       style: TextStyle(
+                    //           fontSize: RCFont.MessageNameFont,
+                    //           color: Color(RCColor.MessageNameBgColor))),
+                    // ),
+                    buildMessageWidget(),
+                    Container(
+                      alignment: Alignment.centerRight,
+                      padding: EdgeInsets.fromLTRB(0, 0, 15, 0),
+                      child: GestureDetector(
+                        behavior: HitTestBehavior.opaque,
+                        onTapDown: (TapDownDetails details) {
+                          this.tapPos = details.globalPosition;
+                        },
+                        onTap: () {
+                          __onTapedReadRequest();
+                        },
+                        child: message.content != null &&
+                            message.content.destructDuration != null &&
+                            message.content.destructDuration > 0
+                            ? Text("")
+                            : buildReadInfo(),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            Visibility(
-              visible: message.objectName != prefix.PromptMessage.objectName,
-              child: GestureDetector(
-                onTap: () {
-                  __onTapedUserPortrait();
-                },
-                child: WidgetUtil.buildUserPortrait(this.user?.portraitUrl,
-                    msgDirection: message.messageDirection),
+              Visibility(
+                visible: message.objectName !=
+                    prefix.PromptMessage.objectName &&
+                    message.objectName != prefix.EndMessage.objectName,
+                child: GestureDetector(
+                  onTap: () {
+                    __onTapedUserPortrait();
+                  },
+                  child: WidgetUtil.buildUserPortrait(this.user?.portraitUrl,
+                      msgDirection: message.messageDirection),
+                ),
               ),
-            ),
-          ],
-        ),
-      );
-    } else if (message.messageDirection == prefix.RCMessageDirection.Receive) {
-      return Expanded(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Visibility(
-              visible: message.objectName != prefix.PromptMessage.objectName,
-              child: GestureDetector(
-                onTap: () {
-                  __onTapedUserPortrait();
-                },
-                onLongPress: () {
-                  __onLongPressUserPortrait(this.tapPos);
-                },
-                child: WidgetUtil.buildUserPortrait(this.user?.portraitUrl,
-                    msgDirection: message.messageDirection),
+            ],
+          ),
+        );
+      } else
+      if (message.messageDirection == prefix.RCMessageDirection.Receive) {
+        return Expanded(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Visibility(
+                visible: message.objectName !=
+                    prefix.PromptMessage.objectName &&
+                    message.objectName != prefix.EndMessage.objectName,
+                child: GestureDetector(
+                  onTap: () {
+                    __onTapedUserPortrait();
+                  },
+                  onLongPress: () {
+                    __onLongPressUserPortrait(this.tapPos);
+                  },
+                  child: WidgetUtil.buildUserPortrait(this.user?.portraitUrl,
+                      msgDirection: message.messageDirection),
+                ),
               ),
-            ),
-            Expanded(
-              child: Column(
-                children: <Widget>[
-                  // Container(
-                  //   alignment: Alignment.centerLeft,
-                  //   padding: EdgeInsets.fromLTRB(15, 0, 0, 0),
-                  //   child: Text(
-                  //     (this.user == null || this.user.id == null
-                  //         ? ""
-                  //         : this.user.id),
-                  //     style:
-                  //         TextStyle(color: Color(RCColor.MessageNameBgColor)),
-                  //   ),
-                  // ),
-                  buildMessageWidget(),
-                ],
+              Expanded(
+                child: Column(
+                  children: <Widget>[
+                    // Container(
+                    //   alignment: Alignment.centerLeft,
+                    //   padding: EdgeInsets.fromLTRB(15, 0, 0, 0),
+                    //   child: Text(
+                    //     (this.user == null || this.user.id == null
+                    //         ? ""
+                    //         : this.user.id),
+                    //     style:
+                    //         TextStyle(color: Color(RCColor.MessageNameBgColor)),
+                    //   ),
+                    // ),
+                    buildMessageWidget(),
+                  ],
+                ),
               ),
-            ),
-          ],
-        ),
-      );
-    } else {
-      return WidgetUtil.buildEmptyWidget();
+            ],
+          ),
+        );
+      } else {
+        return WidgetUtil.buildEmptyWidget();
+      }
     }
   }
 

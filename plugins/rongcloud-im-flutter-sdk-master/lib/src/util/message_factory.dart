@@ -1,8 +1,7 @@
 import 'dart:core';
 import 'dart:convert' show json;
-
-import 'package:rongcloud_im_plugin/src/message/PromptMessage.dart';
-
+import 'package:rongcloud_im_plugin/src/message/customize_message.dart';
+import 'package:rongcloud_im_plugin/src/message/prompt_message.dart';
 import '../../rongcloud_im_plugin.dart';
 import '../util/type_util.dart';
 import 'dart:developer' as developer;
@@ -188,6 +187,14 @@ class MessageFactory extends Object {
     }
     else if(objectName == PromptMessage.objectName){
       content = new PromptMessage();
+      content.decode(contentS);
+    }
+    else if(objectName == CustomizeMessage.objectName){
+      content = new CustomizeMessage();
+      content.decode(contentS);
+    }
+    else if(objectName == EndMessage.objectName){
+      content = new EndMessage();
       content.decode(contentS);
     }
     return content;

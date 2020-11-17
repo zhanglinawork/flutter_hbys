@@ -17,7 +17,9 @@ export 'src/message/gif_message.dart';
 export 'src/message/combine_message.dart';
 export 'src/message/reference_message.dart';
 export 'src/message/location_message.dart';
-export 'src/message/PromptMessage.dart';
+export 'src/message/prompt_message.dart';
+export 'src/message/customize_message.dart';
+export 'src/message/end_message.dart';
 
 //实体类
 export 'src/info/chatroom_info.dart';
